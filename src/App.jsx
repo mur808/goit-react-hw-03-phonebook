@@ -2,6 +2,7 @@ import React from 'react';
 import ContactForm from './components/ContactForm/ContactForm';
 import ContactList from './components/ContactList/ContactList';
 import Filter from './components/Filter/Filter';
+import PropTypes from 'prop-types';
 
 class App extends React.Component {
   state = {
@@ -13,11 +14,29 @@ class App extends React.Component {
     ],
     filter: '',
   };
+  componentDidMount() {
+    const contacts = localStorage.getItem('contacts');
+    const parseContacts = JSON.parse(contacts);
+
+    if (parseContacts) {
+      this.setState({ contacts: parseContacts });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const prevContacts = prevState.contacts;
+    const nextContacts = this.state.contacts;
+
+    if (nextContacts !== prevContacts) {
+      localStorage.setItem('contacts', JSON.stringify(nextContacts));
+    }
+  }
+
   contactName = () => {
-    return this.state.contacts.map(contact => contact.name.toLowerCase());
+    return this.state.contacts.map(contact => contact.name.toLowerCase().trim());
   };
   formSubmitHandler = data => {
-    if (this.contactName().includes(data.name.toLowerCase())) {
+    if (this.contactName().includes(data.name.toLowerCase().trim())) {
       alert(`${data.name} is already in contacts`);
     } else {
       this.setState(prevState => ({
@@ -54,3 +73,9 @@ class App extends React.Component {
 }
 
 export default App;
+
+App.propTypes = {
+  contacts: PropTypes.array.isRequired,
+  name: PropTypes.string.isRequired,
+  number: PropTypes.string.isRequired,
+};

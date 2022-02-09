@@ -1,5 +1,7 @@
 import React from 'react';
 import styles from './ContactItem.module.css';
+import PropTypes from 'prop-types';
+
 const ContactItem = ({ contact, onDelete }) => {
   return (
     <li key={contact.id} className={styles.list_item}>
@@ -20,3 +22,14 @@ const ContactItem = ({ contact, onDelete }) => {
 };
 
 export default ContactItem;
+
+ContactItem.propTypes = {
+  contact: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      number: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
+  onDelete: PropTypes.func.isRequired,
+};
