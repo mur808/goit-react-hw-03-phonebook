@@ -74,8 +74,3 @@ class App extends React.Component {
 
 export default App;
 
-App.propTypes = {
-  contacts: PropTypes.array.isRequired,
-  name: PropTypes.string.isRequired,
-  number: PropTypes.string.isRequired,
-};
